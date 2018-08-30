@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 /**
+ * Transaction representation as mentioned in the task description.
+ *
  * @author Pavel Savinov
  */
 public class Transaction {
