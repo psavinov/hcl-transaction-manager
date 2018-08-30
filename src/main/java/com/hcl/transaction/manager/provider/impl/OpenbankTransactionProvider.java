@@ -9,6 +9,8 @@ import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 
 	@Value("${openbank.transactions.endpoint}")
 	private String endpoint;
+
+	private static final Logger logger = LogManager.getLogger(
+		OpenbankTransactionProvider.class);
 
 	@Override
 	public List<Transaction> getTransactions() throws
@@ -63,6 +68,8 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 
 		}
 		catch (Exception e) {
+			logger.error("Unable to initialize HTTP client", e);
+
 			throw new ExternalProviderException(e);
 		}
 
@@ -82,6 +89,8 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 	private List<Transaction> mapTransactions(Map<String,Object> response) {
 		List<Map<String, Object>> objects =
 			(List<Map<String, Object>>)response.get("transactions");
+
+		logger.info("Openbank transactions list size: " + objects.size());
 
 		List<Transaction> transactions = new ArrayList<>();
 
@@ -147,6 +156,10 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 					transaction.getInstructedAmount());
 				transaction.setInstructedCurrency(
 					transaction.getInstructedCurrency());
+
+				if (logger.isDebugEnabled()) {
+					logger.debug("Parsed transaction " + transaction.getId());
+				}
 
 				transactions.add(transaction);
 			}
