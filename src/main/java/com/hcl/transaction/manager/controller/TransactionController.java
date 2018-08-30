@@ -1,5 +1,6 @@
 package com.hcl.transaction.manager.controller;
 
+import com.hcl.transaction.manager.exception.TransactionManagerException;
 import com.hcl.transaction.manager.model.Transaction;
 import com.hcl.transaction.manager.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class TransactionController {
 		value = "", params = { "page", "size" },
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Transaction> getTransactions(
-			@RequestParam("page") int page, @RequestParam("size") int size) {
+			@RequestParam("page") int page, @RequestParam("size") int size)
+		throws TransactionManagerException {
 
 		return transactionService.getTransactions(page, size);
 	}
@@ -34,8 +36,9 @@ public class TransactionController {
 		value = "", params = { "page", "size", "type" },
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Transaction> getTransactions(
-		@RequestParam("page") int page, @RequestParam("size") int size,
-		@RequestParam("type") String type) {
+			@RequestParam("page") int page, @RequestParam("size") int size,
+			@RequestParam("type") String type)
+		throws TransactionManagerException {
 
 		return transactionService.getTransactions(type, page, size);
 	}

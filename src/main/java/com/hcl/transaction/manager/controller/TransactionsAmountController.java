@@ -1,5 +1,6 @@
 package com.hcl.transaction.manager.controller;
 
+import com.hcl.transaction.manager.exception.TransactionManagerException;
 import com.hcl.transaction.manager.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +26,7 @@ public class TransactionsAmountController {
 		value = "", params = { "type" },
 		produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BigDecimal> getTransactionsAmount(
-		@RequestParam("type") String type) {
+		@RequestParam("type") String type) throws TransactionManagerException {
 
 		BigDecimal totalAmount = transactionService.getTransactionsAmount(type);
 
