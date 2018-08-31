@@ -43,6 +43,8 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 	public List<Transaction> getTransactions() throws
 		ExternalProviderException {
 
+		// Initialize custom request factory to pass certificate check
+
 		TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
 
 			@Override
@@ -78,6 +80,8 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 
 		requestFactory.setHttpClient(httpClient);
 
+		// Get transactions list from the openbank endpoint
+
 		RestTemplate restTemplate = new RestTemplate(requestFactory);
 
 		Map<String, Object> response = restTemplate.getForObject(
@@ -93,6 +97,8 @@ public class OpenbankTransactionProvider implements TransactionProvider {
 		logger.info("Openbank transactions list size: " + objects.size());
 
 		List<Transaction> transactions = new ArrayList<>();
+
+		// Map openbank transactions to our structure
 
 		objects.forEach(
 			object -> {
