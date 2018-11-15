@@ -1,4 +1,4 @@
-# HCL Transaction Manager
+# HCL Transaction Manager (HCL Interview Task)
 
 ### How to run:
 On Unix-like systems: *./mvnw spring-boot:run*<br>
